@@ -1,29 +1,38 @@
-![Latest Release Download Count](https://img.shields.io/badge/dynamic/json?label=Downloads@latest&query=assets%5B1%5D.download_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fspetzel2020%2Fquick-encounters%2Freleases%2Flatest)
-![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fquick-encounters&colorB=4aa94a)
+# Quick Encounters (v14 Fork)
 
-# Quick Encounters
-## 12 - Last planned release
-* QE v12 supports Foundry v10-v12, and will be the last planned release of QE
-* Bugs fixed: See [Release Notes](https://github.com/spetzel2020/quick-encounters/blob/master/CHANGELOG.md)
-## 1.2
-* New feature: [#123](https://github.com/spetzel2020/quick-encounters/issues/123): New option to automatically add Player Tokens to the Combat Tracker
-* Support more generalized dice rolls see [#137](https://github.com/spetzel2020/quick-encounters/issues/137)
-* Compatible with Foundry v9 - v12
-* Bugs fixed: See [Release Notes](https://github.com/spetzel2020/quick-encounters/blob/master/CHANGELOG.md)
-## 1.1
-* New features: Default folder for Quick Encounters (Issue #94), Add Actor RollTables from Journal Entries (Issue #40) - see new Settings
-* Bugs fixed: See [Release Notes](https://github.com/spetzel2020/quick-encounters/blob/master/CHANGELOG.md)
+> **This is a community fork of [Quick Encounters](https://github.com/spetzel2020/quick-encounters) by [Spetzel](https://github.com/spetzel2020), updated for FoundryVTT v14.**
+>
+> All credit for the original design and implementation belongs to **Spetzel**. The original module (v12.1.1) was declared as the final planned release. This fork exists solely to provide v14 compatibility for users who depend on the Quick Encounters workflow.
+>
+> **The v14 migration was assisted by AI (Claude, Anthropic).** Changes include deprecated API updates, removal of pre-v10 compatibility code, security hardening, and CSS modernization. All changes are documented in the commit history.
 
-## 1.0
-* v1.0.8 now working with Foundry v9 & v10
-* Bugs fixed: See [Release Notes](https://github.com/spetzel2020/quick-encounters/blob/master/CHANGELOG.md)
-* Instant Encounters: Enable the new Setting, then you can drag your Quick Encounter directly from Journals to the Scene and be prompted to run it immediately! Perfect for Random or Wandering Encounters.
+---
 
-* **Author**: Spetzel#0103
-* **Version**: 12.1 
-* **Foundry VTT Compatibility**: 10-12
-* **System Compatibility (If applicable)**: All; additional features for dnd5e
-* **Translation Support**: en, es (thanks [lozalojo!](https://github.com/lozalojo)), ja (thanks "touge"!), de (thanks @Fallayn#6414), it (thanks [riccisi](https://github.com/riccisi))
+* **Original Author**: [Spetzel](https://github.com/spetzel2020) — [Original Repository](https://github.com/spetzel2020/quick-encounters)
+* **Fork Maintainer**: [DoomedBastion79](https://github.com/DoomedBastion79)
+* **Version**: 14.0.0
+* **Foundry VTT Compatibility**: 12-14
+* **System Compatibility**: All; additional features for dnd5e
+* **License**: GPLv3 (inherited from original)
+* **Translation Support**: en, es, ja, de, it (inherited from original)
+
+## What Changed in v14.0.0
+
+* Updated all deprecated Foundry APIs (`getDocumentClass()`, `foundry.utils.*`)
+* Removed all pre-v10 compatibility code (v8/v9 branches)
+* Fixed event listener memory leaks in QESheet
+* Fixed async race conditions in form submission
+* Added error handling for silent failures (broken actor refs, token deployment)
+* Added scene enforcement before token deployment
+* Added flag schema validation
+* CSS modernization (removed vendor prefixes, added keyboard accessibility)
+
+## Original Release History
+
+* **v12.1.1** (Final release by Spetzel) — Foundry v10-v12
+* **v1.2** — Added Combat Tracker auto-add, generalized dice rolls
+* **v1.1** — Default folder, Actor RollTables from Journal Entries
+* **v1.0** — Instant Encounters, Foundry v9-v10 support
 
 
 # Description

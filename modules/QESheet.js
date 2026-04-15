@@ -77,29 +77,15 @@ export class QESheet extends FormApplication {
     /** @override  */
     //WARNING: Do not add submitOnClose=true because that will create a submit loop
     static get defaultOptions() {
-        let mergedObject;
-        if (QuickEncounter.isFoundryV12Plus) {
-            mergedObject = foundry.utils.mergeObject(super.defaultOptions, {
-                //no longer setting id here because it gives the same element all the time- override get id() so we can have multiple QE JEs open
-                template : "modules/quick-encounters/templates/qe-sheet.html",
-                closeOnSubmit : false,
-                submitOnClose : false,
-                popOut : true,
-                width : 530,
-                height : "auto"
-            }); 
-        } else {
-            mergedObject = mergeObject(super.defaultOptions, {
-                //no longer setting id here because it gives the same element all the time- override get id() so we can have multiple QE JEs open
-                template : "modules/quick-encounters/templates/qe-sheet.html",
-                closeOnSubmit : false,
-                submitOnClose : false,
-                popOut : true,
-                width : 530,
-                height : "auto"
-            }); 
-        }
-        return mergedObject;
+        return foundry.utils.mergeObject(super.defaultOptions, {
+            //no longer setting id here because it gives the same element all the time- override get id() so we can have multiple QE JEs open
+            template : "modules/quick-encounters/templates/qe-sheet.html",
+            closeOnSubmit : false,
+            submitOnClose : false,
+            popOut : true,
+            width : 530,
+            height : "auto"
+        });
     }
 
 
@@ -111,26 +97,7 @@ export class QESheet extends FormApplication {
     /** @override */
     _getHeaderButtons() {
         let buttons = super._getHeaderButtons();
-        let closeButtonIndex = buttons.findIndex(button => button.label === "Close");
-        // 1.1.0b: Don't have a Hide button in Foundry v10 and leave the button saying Close (as a replacement) - see Issue #108 for why
-        if (QuickEncounter.isFoundryV10Plus) {return buttons;}
-
-        //0.8.1: Issue #42: closeButtonIndex==-1 if not found
-        if ((closeButtonIndex ?? -1) !== -1) {
-            buttons[closeButtonIndex].label = "Cancel";
-        }
-        //0.7.3b: Add a Hide QE button in case you don't want to see this particular one
-        buttons.unshift({
-            label: "QE.JEBorder.HideQE",
-            class: "hideQE",
-            icon: "fas fa-fist-raised",
-            onclick: async ev => {
-                //Toggle the default to not show from now on (you'll have to click the Show button in the JE)
-                this.object.hideQE = true;
-                this.object.serializeIntoJournalEntry();
-                this.close();
-            }
-        });
+        // v10+: No Hide button; leave the button saying Close - see Issue #108 for why
         return buttons;
     }
 
@@ -138,27 +105,19 @@ export class QESheet extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
         if (!this.object?.isFromCompendium) {
-            html.find('button[name="addToCombatTracker"]').click(event => {
-                // FIX: Need to submit the form first and then run; await this.submit({preventClose: true})
-                this.submit({preventClose: true}).then(this.object?.run(event));
+            html.find('button[name="addToCombatTracker"]').off("click").on("click", async (event) => {
+                await this.submit({preventClose: true});
+                await this.object?.run(event);
             });
             //0.7.0: Listeners for when you click "-" (minus)" in actor or tile
-            html.find("#QEContainers .actor-container").each((i, thumbnail) => {
-                //thumbnail.setAttribute("draggable", true);
-                //thumbnail.addEventListener("dragstart", this._onDragStart, false);
-                thumbnail.addEventListener("click", this._onClickActor.bind(this));
-            });
-            html.find("#QEContainers .tile-container").each((i, thumbnail) => {
-                //thumbnail.setAttribute("draggable", true);
-                //thumbnail.addEventListener("dragstart", this._onDragStart, false);
-                thumbnail.addEventListener("click", this._onClickTile.bind(this));
-            });
-            html.find("#QEContainers .rolltable-container").each((i, thumbnail) => {
-                thumbnail.addEventListener("click", this._onClickRollTable.bind(this));
-            });
+            //Use .off().on() to prevent handler accumulation on re-render
+            html.find("#QEContainers .actor-container").off("click").on("click", this._onClickActor.bind(this));
+            html.find("#QEContainers .tile-container").off("click").on("click", this._onClickTile.bind(this));
+            html.find("#QEContainers .rolltable-container").off("click").on("click", this._onClickRollTable.bind(this));
         }
-        html.find('button[name="addTokensTiles"]').click(event => {
-            this.submit({preventClose: true}).then(QuickEncounter.runAddOrCreate(event, this.object));
+        html.find('button[name="addTokensTiles"]').off("click").on("click", async (event) => {
+            await this.submit({preventClose: true});
+            await QuickEncounter.runAddOrCreate(event, this.object);
         });
     }
 

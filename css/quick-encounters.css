@@ -4,9 +4,6 @@
     min-height: 200px;
 }
 #QEContainers .group-container {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
     box-sizing: border-box;
     width: 30%;
 }
@@ -47,7 +44,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
 }
 #QEContainers .num-actors {
     max-width: 80px;
@@ -55,23 +51,24 @@
 }
 
 
-#QEContainers .actor-container:hover .actor-portrait {
-    opacity: 0.3;
-}
-#QEContainers .actor-container:hover .actor-subtract {
-    opacity: 0.8;
-}
-#QEContainers .tile-container:hover .actor-portrait {
-    opacity: 0.3;
-}
-#QEContainers .tile-container:hover .actor-subtract {
-    opacity: 0.8;
-}
+#QEContainers .actor-container:hover .actor-portrait,
+#QEContainers .tile-container:hover .actor-portrait,
 #QEContainers .rolltable-container:hover .actor-portrait {
     opacity: 0.3;
 }
+#QEContainers .actor-container:hover .actor-subtract,
+#QEContainers .tile-container:hover .actor-subtract,
 #QEContainers .rolltable-container:hover .actor-subtract {
     opacity: 0.8;
+}
+
+/* Focus-visible states for keyboard accessibility */
+#QEContainers .actor-container:focus-visible,
+#QEContainers .tile-container:focus-visible,
+#QEContainers .rolltable-container:focus-visible {
+    outline: 2px solid var(--color-border-highlight, #7a7971);
+    outline-offset: 2px;
+    border-radius: 3px;
 }
 
 #QEXP {
@@ -85,11 +82,8 @@
     margin: 0 auto;
     text-align: center;
 }
-#QEXP .clear{
-    position: absolute;
-    margin-top: 5%;
-    width: 15%;
-    height: 45%;
+#QEXP .clear {
+    margin-left: auto;
     text-align: center;
-    transform: translate(550%, 0%);
+    align-self: center;
 }
