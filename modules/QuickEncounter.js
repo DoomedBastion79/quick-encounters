@@ -530,8 +530,16 @@ export class QuickEncounter {
 
     static getSceneControlButtons(buttons) {
         if (!game.user.isGM) {return;}
+
+        // v14: buttons is a Record<string, SceneControl>, not an array
+        // v12: buttons is an Array. Support both for compatibility.
+        const getControl = (name) => {
+            if (Array.isArray(buttons)) return buttons.find(b => b.name === name);
+            return buttons[name];
+        };
+
         //Hooked on the left-hand set of buttons; add a Create Quick Encounter one
-        const basicControlsButton = buttons.find(b => b.name === "token");
+        const basicControlsButton = getControl("token");
 
         if (basicControlsButton) {
             basicControlsButton.tools.push({
@@ -542,10 +550,10 @@ export class QuickEncounter {
                 button: true,
                 visible: game.user.isGM,
                 onClick: event => QuickEncounter.runAddOrCreate(event)
-            });          
+            });
         }
 
-        const tileControlsButton = buttons.find(b => b.name === "tiles");
+        const tileControlsButton = getControl("tiles");
 
         if (tileControlsButton) {
             tileControlsButton.tools.push({
